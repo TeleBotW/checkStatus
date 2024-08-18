@@ -7,7 +7,8 @@ from requests.exceptions import ProxyError, ConnectionError
 import requests
 import json
 import logging
-
+from flask import Flask
+import multiprocessing
 
 API_TOKEN = '7500067001:AAESKhQXLxhm2GsWVzQMEhKhPYhulHE1EhY'
 BOT = telebot.TeleBot(API_TOKEN)
@@ -15,6 +16,12 @@ BOT = telebot.TeleBot(API_TOKEN)
 japApiUrl = 'https://justanotherpanel.com/api/v2'
 japApiKey = '828466267231ce04a7dd374a969dff26'
 
+def run_flask():
+    app = Flask(__name__)
+    @app.route('/')
+    def home():
+        return "البوت يعمل!"
+    app.run(host='0.0.0.0', port=8000)
 
 def check_order_status(order_id):
     postData = {
@@ -119,7 +126,10 @@ def process_order(message):
 
 while True:
         try:
-            BOT.polling(none_stop=True, interval=1)
+            multiprocessing.Process(target=run_flask).start()
+            multiprocessing.Process(target=BOT.polling(none_stop=True, interval=1)).start()
+
+
         except ProxyError as e:
             print(f"Proxy error occurred: {e}")
             time.sleep(5)  # Wait 5 seconds before retrying
