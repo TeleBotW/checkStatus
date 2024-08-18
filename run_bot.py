@@ -112,7 +112,7 @@ def process_order(message):
                 BOT.send_message(message.chat.id,f"حالة الطلب : {status}\nالمتبقي : {remains}\nالمكتمل : {start_count}")
 
     else:
-        BOT.send_message(message.chat.id,'لم يتم العثور على طلب بالرابط المحدد')
+        BOT.send_message(message.chat.id,'لم يتم العثور على طلب')
     print(orders)
     conn.close()
 
