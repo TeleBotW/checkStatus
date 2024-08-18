@@ -21,7 +21,7 @@ def run_flask():
     @app.route('/')
     def home():
         return "البوت يعمل!"
-    app.run(host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0', port=4321)
 
 def check_order_status(order_id):
     postData = {
