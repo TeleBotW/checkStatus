@@ -118,7 +118,7 @@ def process_order(message):
                     remains = order_status['remains']
                     start_count = order_status['start_count']
                     print(f"order status : {order_status}")
-                    BOT.send_message(message.chat.id,f"حالة الطلب : {status}\nالمتبقي : {remains}\نقطة البدء : {start_count}")
+                    BOT.send_message(message.chat.id,f"حالة الطلب : {status}\nالمتبقي : {remains}\nالمكتمل حالياً : {start_count}")
                 else:
                     print(order_status['error'])
                     BOT.send_message(message.chat.id,"لم يتم إيجاد الطلب في JAP")
