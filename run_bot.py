@@ -99,24 +99,31 @@ def process_order(message):
     orders = cursor.fetchall()
     if orders:
         for order in orders:
+            print(order)
             order_customer = order[1]
             order_salla_id = order[2]
             order_jap_id = order[3]
-            order_jap_service_id = order[5]
+            # order_jap_service_id = order[5]
             order_quantity = order[6]
-            order_date = order[8]
-            msg = BOT.send_message(message.chat.id,f"إسم العميل : {order_customer}\nرقم الطلب في سلة : {order_salla_id}\nرقم الطلب في JAP : {order_jap_id}\nرقم الخدمة في JAP : {order_jap_service_id}\nالكمية : {order_quantity}\nتاريخ الطلب : {order_date}")
+            order_date = order[7]
+            msg = BOT.send_message(message.chat.id,f"إسم العميل : {order_customer}\nرقم الطلب في سلة : {order_salla_id}\nرقم الطلب في JAP : {order_jap_id}\nالكمية : {order_quantity}\nتاريخ الطلب : {order_date}")
             # BOT.send_message(message.chat.id,"جاري التأكد من حالة الطلب")
             order_status = check_order_status(order_jap_id)
-            if order_status['error']:
-                print(order_status['error'])
-                BOT.send_message(message.chat.id,"لم يتم إيجاد الطلب في JAP")
-            else:
-                status = order_status['status']
-                remains = order_status['remains']
-                start_count = order_status['start_count']
-                print(f"order status : {order_status}")
-                BOT.send_message(message.chat.id,f"حالة الطلب : {status}\nالمتبقي : {remains}\nالمكتمل : {start_count}")
+            try:
+                print('order status')
+                print(order_status)
+                print(len(order_status))
+                if len(order_status) >= 2:
+                    status = order_status['status']
+                    remains = order_status['remains']
+                    start_count = order_status['start_count']
+                    print(f"order status : {order_status}")
+                    BOT.send_message(message.chat.id,f"حالة الطلب : {status}\nالمتبقي : {remains}\نقطة البدء : {start_count}")
+                else:
+                    print(order_status['error'])
+                    BOT.send_message(message.chat.id,"لم يتم إيجاد الطلب في JAP")
+            except Exception as e:
+                BOT.send_message(message.chat.id,f"حدث خطأ ما {e}")
 
     else:
         BOT.send_message(message.chat.id,'لم يتم العثور على طلب')
