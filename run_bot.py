@@ -103,10 +103,10 @@ def process_order(message):
             order_customer = order[1]
             order_salla_id = order[2]
             order_jap_id = order[3]
-            # order_jap_service_id = order[5]
+            service_name = order[5]
             order_quantity = order[6]
             order_date = order[7]
-            msg = BOT.send_message(message.chat.id,f"إسم العميل : {order_customer}\nرقم الطلب في سلة : {order_salla_id}\nرقم الطلب في JAP : {order_jap_id}\nالكمية : {order_quantity}\nتاريخ الطلب : {order_date}")
+            msg = BOT.send_message(message.chat.id,f"إسم العميل : {order_customer}\nرقم الطلب في سلة : {order_salla_id}\nرقم الطلب في JAP : {order_jap_id}\nإلخدمة : {service_name}\nالكمية : {order_quantity}\nتاريخ الطلب : {order_date}")
             # BOT.send_message(message.chat.id,"جاري التأكد من حالة الطلب")
             order_status = check_order_status(order_jap_id)
             try:
@@ -118,7 +118,7 @@ def process_order(message):
                     remains = order_status['remains']
                     start_count = order_status['start_count']
                     print(f"order status : {order_status}")
-                    BOT.send_message(message.chat.id,f"حالة الطلب : {status}\nالمتبقي : {remains}\nالمكتمل حالياً : {start_count}")
+                    BOT.send_message(message.chat.id,f"حالة الطلب : {status}\nالمتبقي : {remains}\nالكمية عند البدء : {start_count}")
                 else:
                     print(order_status['error'])
                     BOT.send_message(message.chat.id,"لم يتم إيجاد الطلب في JAP")
